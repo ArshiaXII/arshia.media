@@ -13,6 +13,16 @@ gsap.ticker.add((time) => {
 });
 gsap.ticker.lagSmoothing(0);
 
+const marqueeTrack = document.querySelector(".marquee-track");
+if (marqueeTrack) {
+  gsap.to(marqueeTrack, {
+    xPercent: -50,
+    ease: "none",
+    duration: 18,
+    repeat: -1
+  });
+}
+
 gsap.utils.toArray(".scene").forEach((scene) => {
   const revealEls = scene.querySelectorAll(".reveal-up");
   if (!revealEls.length) return;
@@ -28,6 +38,25 @@ gsap.utils.toArray(".scene").forEach((scene) => {
       trigger: scene,
       start: "top 78%",
       once: true
+    }
+  });
+});
+
+const mm = gsap.matchMedia();
+mm.add("(min-width: 901px)", () => {
+  const worksTrack = document.querySelector(".works-track");
+  if (!worksTrack) return;
+
+  gsap.to(worksTrack, {
+    x: () => -Math.max(0, worksTrack.scrollWidth - window.innerWidth + window.innerWidth * 0.12),
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".works",
+      pin: ".works-pin",
+      start: "top top",
+      end: () => `+=${worksTrack.scrollWidth}`,
+      scrub: 1.1,
+      invalidateOnRefresh: true
     }
   });
 });
@@ -109,6 +138,45 @@ gsap.utils.toArray(".mood-item").forEach((item, index) => {
     yoyo: true,
     ease: "sine.inOut"
   });
+});
+
+const manifestoWords = gsap.utils.toArray(".manifesto-word");
+if (manifestoWords.length) {
+  gsap.to(manifestoWords, {
+    opacity: 1,
+    color: "#f3f3f3",
+    stagger: 0.09,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".manifesto",
+      start: "top 65%",
+      end: "bottom 45%",
+      scrub: 0.8
+    }
+  });
+}
+
+gsap.from(".footer-cta", {
+  yPercent: 35,
+  opacity: 0,
+  duration: 1.25,
+  ease: "power4.out",
+  scrollTrigger: {
+    trigger: ".mega-footer",
+    start: "top 85%"
+  }
+});
+
+gsap.from(".contact-cloud > *", {
+  y: 90,
+  opacity: 0,
+  duration: 1.1,
+  stagger: 0.1,
+  ease: "power3.out",
+  scrollTrigger: {
+    trigger: ".mega-footer",
+    start: "top 74%"
+  }
 });
 
 function glitchReveal(targetSelector, startPos) {
