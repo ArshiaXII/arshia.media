@@ -4,6 +4,10 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 const isMobile = window.matchMedia("(max-width: 1100px)").matches;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const lowPowerDevice =
+  (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+  (navigator.deviceMemory && navigator.deviceMemory <= 4);
+const heavyMotionEnabled = !reduceMotion && !lowPowerDevice;
 
 const lenis = new Lenis({
   duration: isMobile ? 0.9 : 1.1,
@@ -18,7 +22,7 @@ gsap.ticker.add((time) => {
 });
 gsap.ticker.lagSmoothing(0);
 
-if (!reduceMotion) {
+if (heavyMotionEnabled) {
   gsap.to(".glow-cyan", {
     x: isMobile ? 48 : 110,
     y: isMobile ? 34 : 72,
@@ -52,7 +56,7 @@ if (marqueeTrack) {
   gsap.to(marqueeTrack, {
     xPercent: -50,
     ease: "none",
-    duration: 18,
+    duration: heavyMotionEnabled ? 18 : 26,
     repeat: -1
   });
 }
@@ -78,7 +82,7 @@ gsap.utils.toArray(".scene").forEach((scene) => {
 
 const mm = gsap.matchMedia();
 mm.add("(min-width: 1281px)", () => {
-  if (reduceMotion) return;
+  if (!heavyMotionEnabled) return;
   const worksTrack = document.querySelector(".works-track");
   if (!worksTrack) return;
 
@@ -96,21 +100,24 @@ mm.add("(min-width: 1281px)", () => {
   });
 });
 
-gsap.to(".hero-video", {
-  scale: 1.08,
-  yPercent: -8,
-  ease: "none",
-  scrollTrigger: {
-    trigger: ".hero",
-    start: "top top",
-    end: "bottom top",
-    scrub: 1.3
-  }
-});
+if (heavyMotionEnabled) {
+  gsap.to(".hero-video", {
+    scale: 1.08,
+    yPercent: -8,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".hero",
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.3
+    }
+  });
+}
 
 gsap.utils.toArray("[data-parallax]").forEach((el) => {
+  if (!heavyMotionEnabled) return;
   const amount = parseFloat(el.getAttribute("data-parallax")) || 120;
-  const responsiveAmount = isMobile ? amount * 0.45 : amount * 0.82;
+  const responsiveAmount = isMobile ? amount * 0.35 : amount * 0.72;
   gsap.fromTo(
     el,
     { y: responsiveAmount * 0.2 },
@@ -167,7 +174,7 @@ gsap.utils.toArray(".mood-item").forEach((item, index) => {
     }
   });
 
-  if (!isMobile && !reduceMotion) {
+  if (!isMobile && heavyMotionEnabled) {
     gsap.to(item, {
       y: "+=18",
       duration: 2.2 + index * 0.4,
