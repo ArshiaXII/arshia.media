@@ -2,7 +2,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 ScrollTrigger.config({ ignoreMobileResize: true });
 
-const isMobile = window.matchMedia("(max-width: 900px)").matches;
+const isMobile = window.matchMedia("(max-width: 1100px)").matches;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const lenis = new Lenis({
@@ -77,7 +77,7 @@ gsap.utils.toArray(".scene").forEach((scene) => {
 });
 
 const mm = gsap.matchMedia();
-mm.add("(min-width: 901px)", () => {
+mm.add("(min-width: 1281px)", () => {
   if (reduceMotion) return;
   const worksTrack = document.querySelector(".works-track");
   if (!worksTrack) return;
@@ -110,12 +110,12 @@ gsap.to(".hero-video", {
 
 gsap.utils.toArray("[data-parallax]").forEach((el) => {
   const amount = parseFloat(el.getAttribute("data-parallax")) || 120;
-  const mobileAmount = amount * 0.45;
+  const responsiveAmount = isMobile ? amount * 0.45 : amount * 0.82;
   gsap.fromTo(
     el,
-    { y: (isMobile ? mobileAmount : amount) * 0.2 },
+    { y: responsiveAmount * 0.2 },
     {
-      y: -(isMobile ? mobileAmount : amount),
+      y: -responsiveAmount,
       ease: "none",
       scrollTrigger: {
         trigger: el.closest(".scene"),
