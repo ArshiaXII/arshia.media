@@ -26,6 +26,58 @@ body {
   cursor: crosshair;
 }
 
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(95px);
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.orb-a {
+  width: min(44vw, 560px);
+  height: min(44vw, 560px);
+  top: -8%;
+  left: -10%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 200, 0.55), rgba(0, 255, 200, 0));
+}
+
+.orb-b {
+  width: min(42vw, 520px);
+  height: min(42vw, 520px);
+  top: 30%;
+  right: -12%;
+  background: radial-gradient(circle at 50% 50%, rgba(98, 168, 255, 0.5), rgba(98, 168, 255, 0));
+}
+
+.orb-c {
+  width: min(36vw, 460px);
+  height: min(36vw, 460px);
+  bottom: -10%;
+  left: 28%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 64, 140, 0.42), rgba(255, 64, 140, 0));
+}
+
+.bg-grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.08;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.4) 0.5px, transparent 0.8px),
+    radial-gradient(circle at 75% 65%, rgba(255, 255, 255, 0.25) 0.5px, transparent 0.8px);
+  background-size: 3px 3px, 4px 4px;
+  will-change: transform;
+}
+
 .site-header {
   position: fixed;
   top: 1.2rem;
@@ -38,6 +90,12 @@ body {
   font-weight: 700;
   letter-spacing: 0.18em;
   font-size: 0.72rem;
+}
+
+main,
+.mega-footer {
+  position: relative;
+  z-index: 1;
 }
 
 .scene {
@@ -507,5 +565,14 @@ body {
   .social-links {
     gap: 0.9rem;
     flex-wrap: wrap;
+  }
+
+  .bg-orb {
+    filter: blur(70px);
+    opacity: 0.2;
+  }
+
+  .orb-c {
+    display: none;
   }
 }

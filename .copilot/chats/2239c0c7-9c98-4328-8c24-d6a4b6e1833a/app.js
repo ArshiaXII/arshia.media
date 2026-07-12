@@ -13,6 +13,56 @@ gsap.ticker.add((time) => {
 });
 gsap.ticker.lagSmoothing(0);
 
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (!reduceMotion) {
+  gsap.to(".orb-a", {
+    x: 110,
+    y: 65,
+    duration: 11,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+
+  gsap.to(".orb-b", {
+    x: -120,
+    y: 90,
+    duration: 14,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+
+  gsap.to(".orb-c", {
+    x: 70,
+    y: -95,
+    duration: 12.5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+
+  gsap.to(".bg-grain", {
+    x: 40,
+    y: -32,
+    duration: 1.1,
+    repeat: -1,
+    yoyo: true,
+    ease: "steps(2)"
+  });
+
+  gsap.to(".bg-fx", {
+    filter: "hue-rotate(18deg)",
+    scrollTrigger: {
+      trigger: "main",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.7
+    }
+  });
+}
+
 const marqueeTrack = document.querySelector(".marquee-track");
 if (marqueeTrack) {
   gsap.to(marqueeTrack, {
