@@ -1,9 +1,14 @@
 gsap.registerPlugin(ScrollTrigger);
 
+ScrollTrigger.config({ ignoreMobileResize: true });
+
+const isMobile = window.matchMedia("(max-width: 900px)").matches;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const lenis = new Lenis({
-  duration: 1.15,
-  wheelMultiplier: 0.95,
-  touchMultiplier: 1.1,
+  duration: isMobile ? 0.9 : 1.1,
+  wheelMultiplier: isMobile ? 0.85 : 0.95,
+  touchMultiplier: isMobile ? 0.9 : 1.05,
   smoothWheel: true
 });
 
@@ -12,6 +17,35 @@ gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
 });
 gsap.ticker.lagSmoothing(0);
+
+if (!reduceMotion) {
+  gsap.to(".glow-cyan", {
+    x: isMobile ? 48 : 110,
+    y: isMobile ? 34 : 72,
+    duration: isMobile ? 16 : 12,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+
+  gsap.to(".glow-magenta", {
+    x: isMobile ? -44 : -96,
+    y: isMobile ? -28 : -58,
+    duration: isMobile ? 18 : 13,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+
+  gsap.to(".bg-grid", {
+    xPercent: 2,
+    yPercent: -2,
+    duration: 20,
+    repeat: -1,
+    yoyo: true,
+    ease: "none"
+  });
+}
 
 const marqueeTrack = document.querySelector(".marquee-track");
 if (marqueeTrack) {
@@ -44,6 +78,7 @@ gsap.utils.toArray(".scene").forEach((scene) => {
 
 const mm = gsap.matchMedia();
 mm.add("(min-width: 901px)", () => {
+  if (reduceMotion) return;
   const worksTrack = document.querySelector(".works-track");
   if (!worksTrack) return;
 
@@ -75,11 +110,12 @@ gsap.to(".hero-video", {
 
 gsap.utils.toArray("[data-parallax]").forEach((el) => {
   const amount = parseFloat(el.getAttribute("data-parallax")) || 120;
+  const mobileAmount = amount * 0.45;
   gsap.fromTo(
     el,
-    { y: amount * 0.2 },
+    { y: (isMobile ? mobileAmount : amount) * 0.2 },
     {
-      y: -amount,
+      y: -(isMobile ? mobileAmount : amount),
       ease: "none",
       scrollTrigger: {
         trigger: el.closest(".scene"),
@@ -131,13 +167,15 @@ gsap.utils.toArray(".mood-item").forEach((item, index) => {
     }
   });
 
-  gsap.to(item, {
-    y: "+=18",
-    duration: 2.2 + index * 0.4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
+  if (!isMobile && !reduceMotion) {
+    gsap.to(item, {
+      y: "+=18",
+      duration: 2.2 + index * 0.4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  }
 });
 
 const manifestoWords = gsap.utils.toArray(".manifesto-word");

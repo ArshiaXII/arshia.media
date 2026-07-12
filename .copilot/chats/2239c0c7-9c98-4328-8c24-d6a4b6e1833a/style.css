@@ -26,6 +26,54 @@ body {
   cursor: crosshair;
 }
 
+.bg-lite {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-glow {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0.2;
+  will-change: transform, opacity;
+}
+
+.glow-cyan {
+  width: min(45vmax, 620px);
+  height: min(45vmax, 620px);
+  top: -14vmax;
+  left: -10vmax;
+  background: radial-gradient(circle, rgba(124, 255, 211, 0.38) 0%, rgba(124, 255, 211, 0) 70%);
+}
+
+.glow-magenta {
+  width: min(38vmax, 520px);
+  height: min(38vmax, 520px);
+  right: -8vmax;
+  bottom: -12vmax;
+  background: radial-gradient(circle, rgba(255, 72, 115, 0.32) 0%, rgba(255, 72, 115, 0) 70%);
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 52px 52px;
+  will-change: transform;
+}
+
+main,
+.mega-footer {
+  position: relative;
+  z-index: 1;
+}
+
 .site-header {
   position: fixed;
   top: 1.2rem;
@@ -507,5 +555,14 @@ body {
   .social-links {
     gap: 0.9rem;
     flex-wrap: wrap;
+  }
+
+  .bg-grid {
+    background-size: 40px 40px;
+    opacity: 0.06;
+  }
+
+  .glow-magenta {
+    opacity: 0.15;
   }
 }
